@@ -6,14 +6,13 @@ import { Task } from './interfaces/task.interface';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(private readonly tasksService: TasksService) { }
 
   @Post()
   async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  
   @Get()
   async findAll(): Promise<Task[]> {
     return this.tasksService.findAll();
@@ -24,16 +23,8 @@ export class TasksController {
     return this.tasksService.updateTask(id, updateTaskDto);
   }
 
-
-  /*@Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(+id);
-  }
-
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(+id);
-  }*/
-
-
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<Task> {
+    return this.tasksService.removeTask(id)
+  }
 }

@@ -11,18 +11,18 @@ export class TasksService {
 
   constructor(
     private readonly prisma: PrismaService
-  ) {}
+  ) { }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise <Task>{
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const { title } = createTaskDto
-    const task = await this.prisma.task.create ({
+    const task = await this.prisma.task.create({
       data: { title }
     });
     return task
 
   }
 
-  async findAll(): Promise<Task[]>  {
+  async findAll(): Promise<Task[]> {
     return this.prisma.task.findMany()
   }
 
@@ -33,13 +33,10 @@ export class TasksService {
     });
   }
 
-
-  /*findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async removeTask(id: number): Promise<Task> {
+    return this.prisma.task.delete({
+      where: { id }
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
-  }*/
-  
 }
