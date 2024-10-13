@@ -3,6 +3,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Task } from './interfaces/task.interface'
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class TasksService {
@@ -24,6 +25,11 @@ export class TasksService {
 
   async findAll(): Promise<Task[]> {
     return this.prisma.task.findMany()
+  }
+
+  async findByStatus(status: Status): Promise<Task[]> {
+    const allowedStatuses = [Status.PENDING, Status.COMPLETED]
+    return this.prisma.task.findMany({ where: { status } })
   }
 
   async updateTask(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
