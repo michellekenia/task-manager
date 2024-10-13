@@ -1,7 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTaskDto } from './create-task.dto';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { Status } from '../entities/task.entity';
+import { Status } from '@prisma/client';
+
 
 export class UpdateTaskDto extends PartialType(CreateTaskDto) {
 

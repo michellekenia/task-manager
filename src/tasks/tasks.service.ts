@@ -1,16 +1,32 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Task } from './interfaces/task.interface'
+import { RedisService } from './redis.service';
 
 @Injectable()
 export class TasksService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+
+  private readonly logger = new Logger(TasksService.name);
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly redisService: RedisService
+  ) {}
+
+  async createTask(createTaskDto: CreateTaskDto): Promise <Task>{
+    const { title } = createTaskDto
+    const task = await this.prisma.task.create ({
+      data: { title }
+    });
+
+    await this.redisService.set(`task:${task.id}`, JSON.stringify(task));
+    return task;
+
   }
 
-  findAll() {
+  /*findAll() {
     return `This action returns all tasks`;
   }
 
@@ -24,5 +40,6 @@ export class TasksService {
 
   remove(id: number) {
     return `This action removes a #${id} task`;
-  }
+  }*/
+  
 }
