@@ -3,7 +3,6 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Task } from './interfaces/task.interface'
-import { RedisService } from './redis.service';
 
 @Injectable()
 export class TasksService {
@@ -11,8 +10,7 @@ export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly redisService: RedisService
+    private readonly prisma: PrismaService
   ) {}
 
   async createTask(createTaskDto: CreateTaskDto): Promise <Task>{
@@ -20,17 +18,15 @@ export class TasksService {
     const task = await this.prisma.task.create ({
       data: { title }
     });
-
-    await this.redisService.set(`task:${task.id}`, JSON.stringify(task));
-    return task;
+    return task
 
   }
 
-  /*findAll() {
-    return `This action returns all tasks`;
+  findAll(): Promise<Task[]>  {
+    return this.prisma.task.findMany()
   }
 
-  findOne(id: number) {
+  /*findOne(id: number) {
     return `This action returns a #${id} task`;
   }
 

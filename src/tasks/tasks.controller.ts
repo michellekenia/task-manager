@@ -14,12 +14,12 @@ export class TasksController {
   }
 
   
-  /*@Get()
-  findAll() {
+  @Get()
+  findAll(): Promise<Task[]> {
     return this.tasksService.findAll();
   }
 
-  @Get(':id')
+  /*@Get(':id')
   findOne(@Param('id') id: string) {
     return this.tasksService.findOne(+id);
   }
