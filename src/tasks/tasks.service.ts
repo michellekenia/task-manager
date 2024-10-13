@@ -22,16 +22,20 @@ export class TasksService {
 
   }
 
-  findAll(): Promise<Task[]>  {
+  async findAll(): Promise<Task[]>  {
     return this.prisma.task.findMany()
   }
 
-  /*findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async updateTask(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    return this.prisma.task.update({
+      where: { id },
+      data: updateTaskDto,
+    });
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+
+  /*findOne(id: number) {
+    return `This action returns a #${id} task`;
   }
 
   remove(id: number) {
