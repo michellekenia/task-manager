@@ -19,3 +19,9 @@ model Task {
   title  String
   status Status @default(PENDING)
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
