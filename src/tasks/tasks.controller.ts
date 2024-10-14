@@ -20,7 +20,7 @@ export class TasksController {
   }
 
   @Get('status')
-  async findByStatus(@Query('status', new ParseEnumPipe (Status)) status: Status): Promise<Task[]> {
+  async findByStatus(@Query('status', new ParseEnumPipe(Status)) status: Status): Promise<Task[]> {
     return this.tasksService.findByStatus(status)
   }
 
