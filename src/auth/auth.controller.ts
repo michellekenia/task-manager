@@ -1,18 +1,21 @@
 import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from './auth.service';
+import { LoginUserDto } from '../user/dto/login-user.dto';
+import { UserService } from 'src/user/user.service';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
-@Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService,  private readonly authService: AuthService) {}
+@Controller('auth')
+export class AuthController {
+  constructor(private readonly authService: AuthService, private readonly userService: UserService,) {}
 
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     try {
       const user = await this.userService.createUser(createUserDto);
-      return { message: 'Usuário registrado com sucesso', user };
+      return {
+        message: 'Usuário registrado com sucesso',
+        user: { id: user.id, username: user.username },
+      };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
@@ -33,7 +36,10 @@ export class UserController {
     }
 
     const token = this.authService.generateJwtToken(user);
-    return { message: 'Login realizado com sucesso', token };
+    return {
+      message: 'Login realizado com sucesso',
+      token,
+    };
   }
   
 }
