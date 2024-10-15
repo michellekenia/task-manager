@@ -31,4 +31,4 @@ Uma API simples para gerenciamento de tarefas, implementada com NestJS e Postgre
 
 # Executando a Aplicação
 
-  npm run start:
+  npm run start
