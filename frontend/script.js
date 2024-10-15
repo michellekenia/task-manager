@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000'; // URL da sua API
+const apiUrl = 'http://localhost:3000'; 
 let token = '';
 
 function toggleRegister() {
@@ -65,16 +65,16 @@ async function adicionarTarefa() {
 
     const data = await response.json();
     alert('Tarefa adicionada: ' + data.title);
-    document.getElementById('nova-tarefa').value = ''; // Limpa o campo após adicionar
+    document.getElementById('nova-tarefa').value = '';
 }
 
 function toggleTarefas() {
     const listaTarefas = document.getElementById('lista-tarefas');
     if (listaTarefas.style.display === 'none') {
         mostrarTarefas();
-        listaTarefas.style.display = 'block'; // Exibe a lista
+        listaTarefas.style.display = 'block';
     } else {
-        listaTarefas.style.display = 'none'; // Oculta a lista
+        listaTarefas.style.display = 'none';
     }
 }
 
@@ -93,18 +93,18 @@ async function mostrarTarefas() {
 
     const tarefas = await response.json();
     const listaTarefas = document.getElementById('lista-tarefas');
-    listaTarefas.innerHTML = ''; // Limpa a lista antes de adicionar novas tarefas
+    listaTarefas.innerHTML = ''; 
 
     tarefas.forEach(tarefa => {
         const li = document.createElement('li');
         li.textContent = `${tarefa.title} - ${tarefa.status}`;
         
-        // Botão para atualizar o status da tarefa
+    
         const updateButton = document.createElement('button');
         updateButton.textContent = tarefa.status === 'PENDING' ? 'Concluir' : 'Reabrir';
         updateButton.onclick = () => atualizarTarefa(tarefa.id, tarefa.status);
         
-        // Botão para deletar a tarefa
+        
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Deletar';
         deleteButton.onclick = () => deletarTarefa(tarefa.id);
@@ -128,7 +128,7 @@ async function atualizarTarefa(id, status) {
 
     if (response.ok) {
         alert('Tarefa atualizada com sucesso!');
-        mostrarTarefas(); // Atualiza a lista de tarefas
+        mostrarTarefas(); 
     } else {
         alert('Erro ao atualizar a tarefa');
     }
