@@ -1,66 +1,126 @@
+/* Estilos Globais */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
+/* Container Principal */
 .container {
-    max-width: 700px; 
-    margin: auto; 
-    padding: 30px; 
-    background-color: white; 
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Títulos */
 h1 {
-    text-align: center; 
+    text-align: center;
+    color: #6a1b9a; /* Tom lilás */
+    margin-bottom: 20px;
 }
 
-input[type="text"] {
-    width: calc(100% - 22px);
+/* Campos de Input */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
     padding: 10px;
-    border-radius: 4px;
+    margin: 10px 0;
     border: 1px solid #ccc;
-    margin-bottom: 15px; 
-}
-
-
-.button-container {
-    display: block; 
-    margin-bottom: 15px;
-}
-
-button {
-    width: auto; 
-    padding: 5px 10px; 
     border-radius: 4px;
-    border: none;
-    background-color: #007bff; 
-    color: white;
-    cursor: pointer;
-    margin-bottom: 10px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3; 
+/* Efeito de Foco nos Inputs */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #6a1b9a; /* Tom lilás */
 }
 
-ul {
-    list-style-type: none; 
-    padding-left: 0; 
-}
-
-li {
+/* Botões */
+button {
+    width: 100%;
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    margin: 10px 0;
+    background-color: #6a1b9a; /* Tom lilás */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-li:last-child {
-    border-bottom: none; 
+/* Efeito de Hover nos Botões */
+button:hover {
+    background-color: #7b1fa2; /* Tom lilás mais claro */
+    transform: scale(1.02);
 }
 
+/* Lista de Tarefas */
+#task-container {
+    margin-top: 20px;
+}
 
-li button {
-    margin-left: 10px; 
+#lista-tarefas {
+    list-style-type: none;
+    padding: 0;
+}
+
+#lista-tarefas li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Botões de Atualizar e Deletar */
+#lista-tarefas button {
+    background-color: #ff4081; /* Tom rosa */
+    padding: 5px 10px; /* Menor */
+    width: auto; /* Ajusta a largura para o conteúdo */
+    margin-left: 10px;
+}
+
+#lista-tarefas button:hover {
+    background-color: #f50057; /* Tom rosa mais escuro */
+}
+
+/* Mensagens de Erro */
+.alert {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: none; /* Oculta por padrão */
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        padding: 8px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 8px;
+    }
 }
