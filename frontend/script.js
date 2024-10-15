@@ -1,96 +1,157 @@
-const apiUrl = 'http://localhost:3000/tasks';
+const apiUrl = 'http://localhost:3000'; // URL da sua API
+let token = '';
 
-async function adicionarTarefa() {
-    const tarefaInput = document.getElementById('nova-tarefa');
-    const titulo = tarefaInput.value;
+function toggleRegister() {
+    const registerContainer = document.getElementById('register-container');
+    registerContainer.style.display = registerContainer.style.display === 'none' ? 'block' : 'none';
+}
 
-    if (!titulo) {
-        alert('Por favor, insira um título para a tarefa.');
-        return;
-    }
+async function register() {
+    const username = document.getElementById('reg-username').value;
+    const password = document.getElementById('reg-password').value;
 
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${apiUrl}/auth/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title: titulo }),
+        body: JSON.stringify({ username, password }),
     });
 
+    const data = await response.json();
+    alert(data.message);
     if (response.ok) {
-        tarefaInput.value = ''; 
-        listarTarefas(); 
-    } else {
-        alert('Erro ao adicionar tarefa.');
+        toggleRegister();
     }
 }
 
-async function listarTarefas(status = '') {
-    const response = await fetch(`${apiUrl}?status=${status}`);
+async function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const response = await fetch(`${apiUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+    alert(data.message);
+    if (response.ok) {
+        token = data.token;
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('task-container').style.display = 'block';
+    }
+}
+
+async function adicionarTarefa() {
+    const novaTarefa = document.getElementById('nova-tarefa').value;
+
+    if (!novaTarefa) {
+        alert("A tarefa não pode estar vazia!");
+        return;
+    }
+
+    const response = await fetch(`${apiUrl}/tasks`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title: novaTarefa, status: 'PENDING' }),
+    });
+
+    const data = await response.json();
+    alert('Tarefa adicionada: ' + data.title);
+    document.getElementById('nova-tarefa').value = ''; // Limpa o campo após adicionar
+}
+
+function toggleTarefas() {
+    const listaTarefas = document.getElementById('lista-tarefas');
+    if (listaTarefas.style.display === 'none') {
+        mostrarTarefas();
+        listaTarefas.style.display = 'block'; // Exibe a lista
+    } else {
+        listaTarefas.style.display = 'none'; // Oculta a lista
+    }
+}
+
+async function mostrarTarefas() {
+    const response = await fetch(`${apiUrl}/tasks`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        alert('Erro ao carregar as tarefas');
+        return;
+    }
+
     const tarefas = await response.json();
     const listaTarefas = document.getElementById('lista-tarefas');
-
-
-    listaTarefas.innerHTML = '';
+    listaTarefas.innerHTML = ''; // Limpa a lista antes de adicionar novas tarefas
 
     tarefas.forEach(tarefa => {
         const li = document.createElement('li');
-        li.textContent = `${tarefa.title} - Status: ${tarefa.status}`;
-
-        const botaoAtualizar = document.createElement('button');
-        botaoAtualizar.textContent = tarefa.status === 'PENDING' ? 'Concluir' : 'Reabrir';
-        botaoAtualizar.onclick = () => atualizarTarefa(tarefa.id, tarefa.status === 'PENDING' ? 'COMPLETED' : 'PENDING');
-
-
-        const botaoRemover = document.createElement('button');
-        botaoRemover.textContent = 'Remover';
-        botaoRemover.onclick = () => removerTarefa(tarefa.id);
-
-        li.appendChild(botaoAtualizar);
-        li.appendChild(botaoRemover);
+        li.textContent = `${tarefa.title} - ${tarefa.status}`;
+        
+        // Botão para atualizar o status da tarefa
+        const updateButton = document.createElement('button');
+        updateButton.textContent = tarefa.status === 'PENDING' ? 'Concluir' : 'Reabrir';
+        updateButton.onclick = () => atualizarTarefa(tarefa.id, tarefa.status);
+        
+        // Botão para deletar a tarefa
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Deletar';
+        deleteButton.onclick = () => deletarTarefa(tarefa.id);
+        
+        li.appendChild(updateButton);
+        li.appendChild(deleteButton);
         listaTarefas.appendChild(li);
     });
 }
 
 async function atualizarTarefa(id, status) {
-    const response = await fetch(`${apiUrl}/${id}`, {
+    const newStatus = status === 'PENDING' ? 'COMPLETED' : 'PENDING';
+    const response = await fetch(`${apiUrl}/tasks/${id}`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ status: status }),
+        body: JSON.stringify({ status: newStatus }),
     });
 
     if (response.ok) {
-        listarTarefas(); 
+        alert('Tarefa atualizada com sucesso!');
+        mostrarTarefas(); // Atualiza a lista de tarefas
     } else {
-        alert('Erro ao atualizar a tarefa.');
+        alert('Erro ao atualizar a tarefa');
     }
 }
 
-async function removerTarefa(id) {
-    const response = await fetch(`${apiUrl}/${id}`, {
+async function deletarTarefa(id) {
+    const response = await fetch(`${apiUrl}/tasks/${id}`, {
         method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
     });
 
     if (response.ok) {
-        listarTarefas(); 
+        alert('Tarefa deletada com sucesso!');
+        mostrarTarefas(); // Atualiza a lista de tarefas
     } else {
-        alert('Erro ao remover a tarefa.');
+        alert('Erro ao deletar a tarefa');
     }
 }
 
-function toggleTarefas() {
-    const listaTarefas = document.getElementById('lista-tarefas');
-    listaTarefas.style.display = listaTarefas.style.display === 'none' ? 'block' : 'none';
+function logout() {
+    token = '';
+    document.getElementById('task-container').style.display = 'none';
+    document.getElementById('auth-container').style.display = 'block';
 }
-
-async function listarTarefasPendentes() {
-    await listarTarefas('PENDING');
-}
-
-async function listarTarefasConcluidas() {
-    await listarTarefas('COMPLETED');
-}
-
-window.onload = listarTarefas;
