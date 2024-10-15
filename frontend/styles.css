@@ -1,4 +1,3 @@
-/* Estilos Globais */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
@@ -7,7 +6,7 @@ body {
     padding: 0;
 }
 
-/* Container Principal */
+
 .container {
     max-width: 500px;
     margin: 50px auto;
@@ -17,14 +16,14 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Títulos */
+
 h1 {
     text-align: center;
-    color: #6a1b9a; /* Tom lilás */
+    color: #6a1b9a; 
     margin-bottom: 20px;
 }
 
-/* Campos de Input */
+
 input[type="text"],
 input[type="password"] {
     width: 100%;
@@ -36,18 +35,18 @@ input[type="password"] {
     transition: border-color 0.3s;
 }
 
-/* Efeito de Foco nos Inputs */
+
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #6a1b9a; /* Tom lilás */
+    border-color: #6a1b9a; 
 }
 
-/* Botões */
+
 button {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    background-color: #6a1b9a; /* Tom lilás */
+    background-color: #6a1b9a; 
     color: white;
     border: none;
     border-radius: 4px;
@@ -55,13 +54,13 @@ button {
     transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Efeito de Hover nos Botões */
+
 button:hover {
-    background-color: #7b1fa2; /* Tom lilás mais claro */
+    background-color: #7b1fa2; 
     transform: scale(1.02);
 }
 
-/* Lista de Tarefas */
+
 #task-container {
     margin-top: 20px;
 }
@@ -82,29 +81,29 @@ button:hover {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Botões de Atualizar e Deletar */
+
 #lista-tarefas button {
-    background-color: #ff4081; /* Tom rosa */
-    padding: 5px 10px; /* Menor */
-    width: auto; /* Ajusta a largura para o conteúdo */
+    background-color: #ff4081; 
+    padding: 5px 10px; 
+    width: auto; 
     margin-left: 10px;
 }
 
 #lista-tarefas button:hover {
-    background-color: #f50057; /* Tom rosa mais escuro */
+    background-color: #f50057; 
 }
 
-/* Mensagens de Erro */
+
 .alert {
     background-color: #f44336;
     color: white;
     padding: 10px;
     border-radius: 4px;
     margin-top: 10px;
-    display: none; /* Oculta por padrão */
+    display: none; 
 }
 
-/* Responsividade */
+
 @media (max-width: 600px) {
     .container {
         margin: 20px;
